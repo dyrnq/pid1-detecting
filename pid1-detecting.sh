@@ -1,6 +1,6 @@
 #!/bin/bash
 
-comm="$(cat /proc/1/comm)"
+comm="$(cat /proc/1/comm 2> /dev/null)"
 
 if [[ "$comm" =~ systemd ]]; then
     init="systemd"
@@ -11,7 +11,7 @@ elif [[ "$comm" =~ runit ]]; then
 fi
 
 if [ -z "$init" ]; then
-    if [[ $(/sbin/init --version) =~ upstart ]]; then
+    if [[ $(/sbin/init --version 2> /dev/null) =~ upstart ]]; then
         init="Upstart"
     elif command -v "launchctl" > /dev/null 2>&1; then
         init="launchd";
